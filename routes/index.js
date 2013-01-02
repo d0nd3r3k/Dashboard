@@ -4,7 +4,7 @@
  */
 
 exports.routes = function(app) {
-  app.get('/dashboard', function(req, res) {
+  app.get('/dashboard-stub', function(req, res) {
     users = [];
     user = {};
     user.name = "Piotr Yordanov";
@@ -33,25 +33,39 @@ exports.routes = function(app) {
   });
 
   app.get('/', function(req, res) {
-    res.render('index', { videourl : 'http://www.youtube.com/embed/h7ArUgxtlJs'});
-    console.log("hello, world");
+    res.render('index');
   });
 
-  app.post('/getVideos', function(req, res) {
-    console.log("post request");
-    var youtube = require('youtube-feeds');
-    var string;
-    youtube.feeds.videos( {q: req.param("name"), 'max-results': 2}, function(result) {
-      console.log(result.items[0]);
-      string = result.items[0].id;
-      string.videourl = string;
-      string = "http://www.youtube.com/embed/" + string;
-      if(req.param("name")) {
-        res.json({ videourl : string });
-      } else {
-        res.json({ videourl : string });
-      }
+  app.get('/dashboard', function(req, res) {
+    var users = {};
+    var nconf = require('nconf');
+    nconf.argv().env().file({
+      file: "./config.json.example"
     });
+
+    var options = nconf.get('github');
+
+    console.log(options.client_id + ' ' + options.client_secret);
+    
+    console.log('Getting Lebanese-OSS Users');
+    var request = require('request');
+    var org_url = "https://api.github.com/orgs/Lebanese-OSS"+ "&per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
+    console.log(org_url);
+    return request(org_url, function(error, response, body) {
+      body.forEach(function(member){
+        console.log('Getting Information For User: ' + member.login);
+        member_url = "https://api.github.com/users/"+ member.login + "&per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
+        return request(url, function(error, response, body) {
+          console.log(body);
+        });
+      })
+    });
+
+    var github = new GitHubApi({
+        version: "3.0.0"
+    });
+
   });
+
 };
 

@@ -149,7 +149,7 @@ window.require.define({"models/users": function(exports, require, module) {
 
   module.exports = Backbone.Collection.extend({
     model: User,
-    url: '/dashboard'
+    url: '/dashboard-stub'
   });
   
 }});

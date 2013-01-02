@@ -49,13 +49,13 @@ exports.routes = function(app) {
     
     console.log('Getting Lebanese-OSS Users');
     var request = require('request');
-    var org_url = "https://api.github.com/orgs/Lebanese-OSS"+ "?&per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
+    var org_url = "https://api.github.com/orgs/Lebanese-OSS/members"+ "?&per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
     console.log(org_url);
     return request(org_url, function(error, response, body) {
-      body.forEach(function(member){
+      JSON.parse(body).forEach(function(member){
         console.log('Getting Information For User: ' + member.login);
-        member_url = "https://api.github.com/users/"+ member.login + "&per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
-        return request(url, function(error, response, body) {
+        member_url = "https://api.github.com/users/"+ member.login + "?per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
+        return request(member_url, function(error, response, body) {
           console.log(body);
         });
       })

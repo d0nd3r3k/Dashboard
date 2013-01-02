@@ -75,16 +75,19 @@
 })();
 
 window.require.define({"application": function(exports, require, module) {
-  var Application, HomeView;
+  var Application, HomeView, User;
 
   HomeView = require('views/home_view');
+
+  User = require('models/users');
 
   module.exports = Application = (function() {
 
     function Application() {}
 
     Application.prototype.initialize = function() {
-      return this.homeView = new HomeView();
+      this.homeView = new HomeView();
+      return this.user = new User();
     };
 
     Application.prototype.render = function() {
@@ -128,59 +131,56 @@ window.require.define({"lib/router": function(exports, require, module) {
   
 }});
 
-window.require.define({"models/collection": function(exports, require, module) {
+window.require.define({"models/user": function(exports, require, module) {
   
-  module.exports = Backbone.Collection.extend({});
+  module.exports = Backbone.Model.extend({
+    defaults: {
+      name: '',
+      website: ''
+    }
+  });
   
 }});
 
-window.require.define({"models/model": function(exports, require, module) {
-  
-  module.exports = Backbone.Model.extend;
+window.require.define({"models/users": function(exports, require, module) {
+  var User;
+
+  User = require('models/user');
+
+  module.exports = Backbone.Collection.extend({
+    model: User,
+    url: '/dashboard'
+  });
   
 }});
 
 window.require.define({"views/home_view": function(exports, require, module) {
-  
+  var UserCollection;
+
+  UserCollection = require('models/users');
+
   module.exports = Backbone.View.extend({
     el: '#main',
     template: require('views/templates/home'),
-    events: {
-      "click .form-submit": "get_new_video",
-      "keypress input": "get_new_video"
-    },
     initialize: function() {
       var _this = this;
-      return $.ajax({
-        url: "/video"
-      }).done(function(videourl) {
-        _this.data = {};
-        _this.data.videourl = videourl;
+      this.data = {};
+      this.user_collection = new UserCollection;
+      this.user_collection.fetch();
+      return this.user_collection.on("reset", function() {
+        _this.data.users = [];
+        _this.user_collection.toJSON().forEach(function(x) {
+          return _this.data.users.push(x);
+        });
         return _this.render();
       });
     },
-    get_new_video: function(event) {
-      var _this = this;
-      if (event.keyCode === void 0 || event.keyCode === 13) {
-        return $.ajax({
-          type: "POST",
-          url: "/getVideos",
-          cache: false,
-          data: {
-            name: $(".name").val()
-          },
-          beforeSend: function() {},
-          success: function(data) {
-            _this.data = data;
-            return _this.render();
-          },
-          error: function() {}
-        });
-      }
-    },
     render: function() {
-      if (this.data) {
-        return $(this.el).html(this.template(this.data));
+      if (this.data.users != null) {
+        $(this.el).html(this.template(this.data));
+        return $("#users").masonry({
+          itemSelector: '.user-container'
+        });
       }
     }
   });
@@ -193,9 +193,37 @@ window.require.define({"views/templates/home": function(exports, require, module
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="container"><div class="row main"><div class="hero-unit"><h1>Tchazzam!</h1><h2>Welcome, Brother.</h2><p>Name a song you\'d like to hear</p><input name="name" class="name"/><button class="btn-inverse form-submit">Search</button><div class="videodiv"><iframe');
-  buf.push(attrs({ 'title':("Video Title"), 'height':("390"), 'width':("480"), 'frameborder':("0"), 'src':("" + (videourl) + "") }, {"title":true,"height":true,"width":true,"frameborder":true,"src":true}));
-  buf.push('></iframe></div></div></div></div>');
+  buf.push('<div class="container"><div id="users" class="row-fluid">');
+  // iterate users
+  ;(function(){
+    if ('number' == typeof users.length) {
+
+      for (var $index = 0, $$l = users.length; $index < $$l; $index++) {
+        var user = users[$index];
+
+  buf.push('<div class="user-container"><img');
+  buf.push(attrs({ 'src':("http://www.gravatar.com/avatar/" + (user.gravatar_id) + "?s=400") }, {"src":true}));
+  buf.push('/><a');
+  buf.push(attrs({ 'href':("" + (user.html_url) + "") }, {"href":true}));
+  buf.push('><h4>' + escape((interp = user.name) == null ? '' : interp) + '</h4></a><p>( ' + escape((interp = user.nickname) == null ? '' : interp) + ' )</p><div class="blog"><a href="#{user.blog">' + escape((interp = user.blog) == null ? '' : interp) + '</a></div><div class="social"><div class="entry"><p>Followers</p><p>' + escape((interp = user.followers) == null ? '' : interp) + '</p></div><div class="entry"><p>Stars</p><p>' + escape((interp = user.stars) == null ? '' : interp) + '</p></div><div class="entry"><p>Following</p><p>' + escape((interp = user.following) == null ? '' : interp) + '</p></div></div></div>');
+      }
+
+    } else {
+      var $$l = 0;
+      for (var $index in users) {
+        $$l++;      var user = users[$index];
+
+  buf.push('<div class="user-container"><img');
+  buf.push(attrs({ 'src':("http://www.gravatar.com/avatar/" + (user.gravatar_id) + "?s=400") }, {"src":true}));
+  buf.push('/><a');
+  buf.push(attrs({ 'href':("" + (user.html_url) + "") }, {"href":true}));
+  buf.push('><h4>' + escape((interp = user.name) == null ? '' : interp) + '</h4></a><p>( ' + escape((interp = user.nickname) == null ? '' : interp) + ' )</p><div class="blog"><a href="#{user.blog">' + escape((interp = user.blog) == null ? '' : interp) + '</a></div><div class="social"><div class="entry"><p>Followers</p><p>' + escape((interp = user.followers) == null ? '' : interp) + '</p></div><div class="entry"><p>Stars</p><p>' + escape((interp = user.stars) == null ? '' : interp) + '</p></div><div class="entry"><p>Following</p><p>' + escape((interp = user.following) == null ? '' : interp) + '</p></div></div></div>');
+      }
+
+    }
+  }).call(this);
+
+  buf.push('</div></div>');
   }
   return buf.join("");
   };

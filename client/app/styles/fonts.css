@@ -1,38 +1,3 @@
-#main {
-  margin-top: 100px;
-}
-.user-container {
-  margin-right: 20px;
-  width: 200px;
-  background: rgba(255,255,255,0.7);
-  box-shadow: 0 1px 13px rgba(0,0,0,0.3);
-  border-radius: 10px;
-  text-align: center;
-}
-.user-container a,
-.user-container h4 {
-  font-family: 'Roboto';
-  color: #df3e7b;
-  font-weight: bold;
-}
-.user-container h4 {
-  color: #b4245e;
-}
-.user-container .blog {
-  border-top: 1px solid rgba(0,0,0,0.1);
-  padding: 5px;
-}
-.user-container .social {
-  border-top: 1px solid rgba(0,0,0,0.1);
-  padding: 5px;
-}
-.user-container .social .entry {
-  display: inline-block;
-  margin-right: 7px;
-}
-.user-container .social .entry p {
-  margin-bottom: 0px;
-}
 /* All Roboto Fonts - take that yoz*/
 @font-face {
     font-family: 'fonts/Roboto';
@@ -144,14 +109,3 @@
     font-style: italic;
 }
 
-body {
-  background-image: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/gray_jean.png");
-  font-family: 'Roboto';
-}
-#users {
-  color: #57534a;
-  background-image: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/gray_jean.png");
-}
-#users p {
-  font-size: 15px;
-}

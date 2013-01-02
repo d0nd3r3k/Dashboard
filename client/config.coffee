@@ -31,6 +31,8 @@ exports.config =
           'vendor/scripts/bootstrap/bootstrap-tab.js',
           'vendor/scripts/bootstrap/bootstrap-transition.js',
           'vendor/scripts/bootstrap/bootstrap-typeahed.js'
+          # Masonry
+          'vendor/scripts/jquery.masonry.min.js',
         ]
         after: [
         ]

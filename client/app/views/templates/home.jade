@@ -1,10 +1,20 @@
 .container
-  .row.main
-    .hero-unit
-      h1 Tchazzam!
-      h2 Welcome, Brother.
-      p Name a song you'd like to hear
-      input.name(name="name")
-      button.btn-inverse.form-submit Search
-      div.videodiv
-        iframe(title="Video Title", height="390", width="480", frameborder="0", src= "#{videourl}")
+  .row-fluid#users
+    each user in users
+      .user-container
+        img(src="http://www.gravatar.com/avatar/#{user.gravatar_id}?s=400")
+        a(href="#{user.html_url}")
+          h4 #{user.name}
+        p ( #{user.nickname} )
+        .blog
+          a(href="#{user.blog") #{user.blog}
+        .social
+          .entry
+            p Followers
+            p #{user.followers}
+          .entry
+            p Stars
+            p #{user.stars}
+          .entry
+            p Following
+            p #{user.following}

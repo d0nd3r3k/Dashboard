@@ -1,34 +1,23 @@
+UserCollection= require 'models/users'
+
 module.exports = Backbone.View.extend(
   el: '#main'
   template: require('views/templates/home')
-  events:
-    "click .form-submit": "get_new_video"
-    "keypress input": "get_new_video"
 
   initialize: ->
-    $.ajax(
-      url: "/video"
-    ).done (videourl) =>
-      @data = {}
-      @data.videourl = videourl
+    @data = {}
+
+    @user_collection = new UserCollection
+    @user_collection.fetch()
+    @user_collection.on "reset", =>
+      @data.users = []
+      @user_collection.toJSON().forEach (x) =>
+        @data.users.push x
       @render()
 
-  get_new_video: (event)->
-    if event.keyCode is undefined || event.keyCode == 13
-      $.ajax
-        type: "POST"
-        url: "/getVideos"
-        cache: false
-        data: {
-          name: $(".name").val()
-        }
-        beforeSend: ->
-        success: (data) =>
-          @data = data
-          @render()
-        error: ->
-
   render: ->
-    if @data
+    if @data.users?
       $(@el).html @template(@data)
+      $("#users").masonry
+        itemSelector: '.user-container'
 )

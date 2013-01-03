@@ -14,8 +14,7 @@
     "request": "2.12.x",
     "async": "0.1.x",
     "github": "0.1.x",
-    "oauth": "0.9.x",
-    "require-analyzer": "0.4.x.-3"
+    "oauth": "0.9.x"
   },
   "engines": {
     "node": "0.8.x",

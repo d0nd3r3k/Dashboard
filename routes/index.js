@@ -39,6 +39,8 @@ exports.routes = function(app) {
   app.get('/dashboard', function(req, res) {
     var users = {};
     var nconf = require('nconf');
+    var async = require('async');
+
     nconf.argv().env().file({
       file: "./config.json"
     });
@@ -49,20 +51,19 @@ exports.routes = function(app) {
     var org_url = "https://api.github.com/orgs/Lebanese-OSS/members"+ "?&per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
 
     users = [];
-    return request(org_url, function(error, response, body) {
-      JSON.parse(body).forEach(function(member){
+    request(org_url, function(error, response, body) {
+      async.forEach(JSON.parse(body), function(member, cb){
         member_url = "https://api.github.com/users/"+ member.login + "?per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
-        return request(member_url, function(error, response, body) {
+        request(member_url, function(error, response, body) {
           user = JSON.parse(body);
-          console.log(user);
           users.push(user);
+          cb();
         });
-      })
+      }), function(err) {
+        console.log(users.length);
+        res.send(users); }
     });
-
-    var github = new GitHubApi({
-        version: "3.0.0"
-    });
+    console.log(users);
 
   });
 

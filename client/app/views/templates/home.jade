@@ -9,6 +9,9 @@
           else
             h4 #{user.login}
         p ( #{user.login} )
+        p
+          b #{user.public_repos} 
+          | Repos!
         .blog
           if user.blog
             a(href="#{user.blog") #{user.blog}

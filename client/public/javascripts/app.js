@@ -149,7 +149,10 @@ window.require.define({"models/users": function(exports, require, module) {
 
   module.exports = Backbone.Collection.extend({
     model: User,
-    url: '/dashboard'
+    url: '/dashboard',
+    comparator: function(user) {
+      return -user.get("public_repos");
+    }
   });
   
 }});
@@ -214,7 +217,7 @@ window.require.define({"views/templates/home": function(exports, require, module
   {
   buf.push('<h4>' + escape((interp = user.login) == null ? '' : interp) + '</h4>');
   }
-  buf.push('</a><p>( ' + escape((interp = user.login) == null ? '' : interp) + ' )</p><div class="blog">');
+  buf.push('</a><p>( ' + escape((interp = user.login) == null ? '' : interp) + ' )</p><p><b>' + escape((interp = user.public_repos) == null ? '' : interp) + ' </b>Repos!</p><div class="blog">');
   if ( user.blog)
   {
   buf.push('<a href="#{user.blog">' + escape((interp = user.blog) == null ? '' : interp) + '</a>');
@@ -244,7 +247,7 @@ window.require.define({"views/templates/home": function(exports, require, module
   {
   buf.push('<h4>' + escape((interp = user.login) == null ? '' : interp) + '</h4>');
   }
-  buf.push('</a><p>( ' + escape((interp = user.login) == null ? '' : interp) + ' )</p><div class="blog">');
+  buf.push('</a><p>( ' + escape((interp = user.login) == null ? '' : interp) + ' )</p><p><b>' + escape((interp = user.public_repos) == null ? '' : interp) + ' </b>Repos!</p><div class="blog">');
   if ( user.blog)
   {
   buf.push('<a href="#{user.blog">' + escape((interp = user.blog) == null ? '' : interp) + '</a>');

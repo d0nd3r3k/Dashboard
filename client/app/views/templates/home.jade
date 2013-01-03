@@ -4,10 +4,16 @@
       .user-container
         img(src="http://www.gravatar.com/avatar/#{user.gravatar_id}?s=400")
         a(href="#{user.html_url}")
-          h4 #{user.name}
-        p ( #{user.nickname} )
+          if user.name
+            h4 #{user.name}
+          else
+            h4 #{user.login}
+        p ( #{user.login} )
         .blog
-          a(href="#{user.blog") #{user.blog}
+          if user.blog
+            a(href="#{user.blog") #{user.blog}
+          else
+            p No blog :(
         .social
           .entry
             p Followers

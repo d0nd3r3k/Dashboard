@@ -149,7 +149,7 @@ window.require.define({"models/users": function(exports, require, module) {
 
   module.exports = Backbone.Collection.extend({
     model: User,
-    url: '/dashboard-stub'
+    url: '/dashboard'
   });
   
 }});
@@ -205,7 +205,25 @@ window.require.define({"views/templates/home": function(exports, require, module
   buf.push(attrs({ 'src':("http://www.gravatar.com/avatar/" + (user.gravatar_id) + "?s=400") }, {"src":true}));
   buf.push('/><a');
   buf.push(attrs({ 'href':("" + (user.html_url) + "") }, {"href":true}));
-  buf.push('><h4>' + escape((interp = user.name) == null ? '' : interp) + '</h4></a><p>( ' + escape((interp = user.nickname) == null ? '' : interp) + ' )</p><div class="blog"><a href="#{user.blog">' + escape((interp = user.blog) == null ? '' : interp) + '</a></div><div class="social"><div class="entry"><p>Followers</p><p>' + escape((interp = user.followers) == null ? '' : interp) + '</p></div><div class="entry"><p>Stars</p><p>' + escape((interp = user.stars) == null ? '' : interp) + '</p></div><div class="entry"><p>Following</p><p>' + escape((interp = user.following) == null ? '' : interp) + '</p></div></div></div>');
+  buf.push('>');
+  if ( user.name)
+  {
+  buf.push('<h4>' + escape((interp = user.name) == null ? '' : interp) + '</h4>');
+  }
+  else
+  {
+  buf.push('<h4>' + escape((interp = user.login) == null ? '' : interp) + '</h4>');
+  }
+  buf.push('</a><p>( ' + escape((interp = user.login) == null ? '' : interp) + ' )</p><div class="blog">');
+  if ( user.blog)
+  {
+  buf.push('<a href="#{user.blog">' + escape((interp = user.blog) == null ? '' : interp) + '</a>');
+  }
+  else
+  {
+  buf.push('<p>No blog :(</p>');
+  }
+  buf.push('</div><div class="social"><div class="entry"><p>Followers</p><p>' + escape((interp = user.followers) == null ? '' : interp) + '</p></div><div class="entry"><p>Stars</p><p>' + escape((interp = user.stars) == null ? '' : interp) + '</p></div><div class="entry"><p>Following</p><p>' + escape((interp = user.following) == null ? '' : interp) + '</p></div></div></div>');
       }
 
     } else {
@@ -217,7 +235,25 @@ window.require.define({"views/templates/home": function(exports, require, module
   buf.push(attrs({ 'src':("http://www.gravatar.com/avatar/" + (user.gravatar_id) + "?s=400") }, {"src":true}));
   buf.push('/><a');
   buf.push(attrs({ 'href':("" + (user.html_url) + "") }, {"href":true}));
-  buf.push('><h4>' + escape((interp = user.name) == null ? '' : interp) + '</h4></a><p>( ' + escape((interp = user.nickname) == null ? '' : interp) + ' )</p><div class="blog"><a href="#{user.blog">' + escape((interp = user.blog) == null ? '' : interp) + '</a></div><div class="social"><div class="entry"><p>Followers</p><p>' + escape((interp = user.followers) == null ? '' : interp) + '</p></div><div class="entry"><p>Stars</p><p>' + escape((interp = user.stars) == null ? '' : interp) + '</p></div><div class="entry"><p>Following</p><p>' + escape((interp = user.following) == null ? '' : interp) + '</p></div></div></div>');
+  buf.push('>');
+  if ( user.name)
+  {
+  buf.push('<h4>' + escape((interp = user.name) == null ? '' : interp) + '</h4>');
+  }
+  else
+  {
+  buf.push('<h4>' + escape((interp = user.login) == null ? '' : interp) + '</h4>');
+  }
+  buf.push('</a><p>( ' + escape((interp = user.login) == null ? '' : interp) + ' )</p><div class="blog">');
+  if ( user.blog)
+  {
+  buf.push('<a href="#{user.blog">' + escape((interp = user.blog) == null ? '' : interp) + '</a>');
+  }
+  else
+  {
+  buf.push('<p>No blog :(</p>');
+  }
+  buf.push('</div><div class="social"><div class="entry"><p>Followers</p><p>' + escape((interp = user.followers) == null ? '' : interp) + '</p></div><div class="entry"><p>Stars</p><p>' + escape((interp = user.stars) == null ? '' : interp) + '</p></div><div class="entry"><p>Following</p><p>' + escape((interp = user.following) == null ? '' : interp) + '</p></div></div></div>');
       }
 
     }

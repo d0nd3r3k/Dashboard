@@ -51,21 +51,20 @@ exports.routes = function(app) {
     var org_url = "https://api.github.com/orgs/Lebanese-OSS/members"+ "?&per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
 
     users = [];
+
+    get_user_info = function(member, callback){
+      member_url = "https://api.github.com/users/"+ member.login + "?per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
+      request(member_url, function(error, response, body) {
+        user = JSON.parse(body);
+        users.push(user);
+        callback();
+      });
+    };
+
     request(org_url, function(error, response, body) {
-      async.forEach(JSON.parse(body), function(member, cb){
-        member_url = "https://api.github.com/users/"+ member.login + "?per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
-        request(member_url, function(error, response, body) {
-          user = JSON.parse(body);
-          users.push(user);
-          cb();
-        });
-      }), function(err) {
-        console.log(users.length);
-        res.send(users); }
+      async.forEach(JSON.parse(body), get_user_info , function(err) {
+        res.send(users); 
+      });
     });
-    console.log(users);
-
   });
-
 };
-

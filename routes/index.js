@@ -47,6 +47,8 @@ exports.routes = function(app) {
 
     var options = nconf.get('github');
 
+    fs = require('fs');
+    /*
     var request = require('request');
     var org_url = "https://api.github.com/orgs/Lebanese-OSS/members"+ "?&per_page=100&client_id=" + options.client_id + "&client_secret=" + options.client_secret;
 
@@ -64,7 +66,17 @@ exports.routes = function(app) {
     request(org_url, function(error, response, body) {
       async.forEach(JSON.parse(body), get_user_info , function(err) {
         res.send(users); 
+        fs.writeFile("users", JSON.stringify(users), function(err) {
+            if(err) {
+                    console.log(err);
+                } else {
+                        console.log("The file was saved!");
+                    }
+        }); 
       });
     });
+    */
+    var obj = JSON.parse(fs.readFileSync('users', 'utf8'));
+    res.send(obj);
   });
 };
